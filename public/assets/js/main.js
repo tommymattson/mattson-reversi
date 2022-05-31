@@ -36,7 +36,7 @@ socket.on('join_room_response', (payload) => {
         console.log(payload.message);
         return;
     }
-    let newString = '<p class=\'join_room_response\'>'+payload.username+'joined the '+payload.room+'. There are '+payload.count+' users in this room</p>'
+    let newString = '<p class=\'join_room_response\'>'+payload.username+' joined the '+payload.room+'. There are '+payload.count+' users in this room</p>'
     $('#messages').prepend(newString);
 })
 
