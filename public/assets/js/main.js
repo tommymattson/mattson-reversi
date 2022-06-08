@@ -43,16 +43,22 @@ function makeInviteButton(socket_id) {
     return newNode;
 }
 
-function makeInvitedButton() {
+function makeInvitedButton(socket_id) {
     let newHTML = "<button type='button' class='btn btn-primary'>Invited</button>";
     let newNode = $(newHTML);
+    newNode.click(() => {
+        let payload = {
+            requested_user: socket_id
+        }
+        console.log('**** Client log message, sending \'uninvite\' command: ' + JSON.stringify(payload));
+        socket.emit('uninvite', payload);
+    });
     return newNode;
 }
 
 function makePlayButton() {
     let newHTML = "<button type='button' class='btn btn-success'>Play</button>";
     let newNode = $(newHTML);
-    console.log("did this worky 2")
     return newNode;
 }
 
@@ -71,7 +77,7 @@ socket.on('invite_response', (payload) => {
         console.log(payload.message);
         return;
     }
-    let newNode = makeInvitedButton();
+    let newNode = makeInvitedButton(payload.socket_id);
     $('.socket_'+payload.socket_id+' button').replaceWith(newNode);
 })
 
@@ -84,11 +90,21 @@ socket.on('invited', (payload) => {
         console.log(payload.message);
         return;
     }
-    console.log("did this work")
     let newNode = makePlayButton();
-    console.log(payload.socket_id);
     $('.socket_'+payload.socket_id+' button').replaceWith(newNode);
-    console.log("did this work3")
+})
+
+socket.on('uninvited', (payload) => {
+    if ((typeof payload == 'undefined') || (payload) === null) {
+        console.log('Server did not send a payload');
+        return;
+    }
+    if (payload.result === 'fail') {
+        console.log(payload.message);
+        return;
+    }
+    let newNode = makeInviteButton(payload.socket_id);
+    $('.socket_'+payload.socket_id+' button').replaceWith(newNode);
 })
 
 socket.on('join_room_response', (payload) => {
