@@ -88,7 +88,7 @@ socket.on('invite_response', (payload) => {
         return;
     }
     let newNode = makeInvitedButton(payload.socket_id);
-    $('.socket_'+payload.socket_id+' button').replaceWith(newNode);
+    $('.socket_' + payload.socket_id + ' button').replaceWith(newNode);
 })
 
 
@@ -102,7 +102,7 @@ socket.on('invited', (payload) => {
         return;
     }
     let newNode = makePlayButton(payload.socket_id);
-    $('.socket_'+payload.socket_id+' button').replaceWith(newNode);
+    $('.socket_' + payload.socket_id + ' button').replaceWith(newNode);
 })
 
 
@@ -116,7 +116,7 @@ socket.on('uninvited', (payload) => {
         return;
     }
     let newNode = makeInviteButton(payload.socket_id);
-    $('.socket_'+payload.socket_id+' button').replaceWith(newNode);
+    $('.socket_' + payload.socket_id + ' button').replaceWith(newNode);
 })
 
 
@@ -130,9 +130,9 @@ socket.on('game_start_response', (payload) => {
         return;
     }
     let newNode = makeStartGameButton();
-    $('.socket_'+payload.socket_id+' button').replaceWith(newNode);
+    $('.socket_' + payload.socket_id + ' button').replaceWith(newNode);
     /** Jump to the game page */
-    window.location.href = 'game.html?username='+username+'&game_id='+payload.game_id;
+    window.location.href = 'game.html?username=' + username + '&game_id=' + payload.game_id;
 })
 
 
@@ -249,14 +249,14 @@ socket.on('send_chat_message_response', (payload) => {
 })
 
 let old_board = [
-    ['?','?','?','?','?','?','?','?'],
-    ['?','?','?','?','?','?','?','?'],
-    ['?','?','?','?','?','?','?','?'],
-    ['?','?','?','?','?','?','?','?'],
-    ['?','?','?','?','?','?','?','?'],
-    ['?','?','?','?','?','?','?','?'],
-    ['?','?','?','?','?','?','?','?'],
-    ['?','?','?','?','?','?','?','?']
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?']
 ];
 
 let my_color = "";
@@ -270,7 +270,7 @@ socket.on('game_update', (payload) => {
         console.log(payload.message);
         return;
     }
-    
+
     let board = payload.game.board;
     if ((typeof board == 'undefined') || (board) === null) {
         console.log('Server did not send a valid board to display');
@@ -285,30 +285,30 @@ socket.on('game_update', (payload) => {
         my_color = 'blue';
     }
     else {
-        window.location.href = 'lobby.html?username='+username;
+        window.location.href = 'lobby.html?username=' + username;
         return
     }
 
-    if (my_color === 'red'){
+    if (my_color === 'red') {
         $("#my_color").html('<h3 id="my_color">Team Red</h3>');
     }
-    else if (my_color === 'blue'){
+    else if (my_color === 'blue') {
         $("#my_color").html('<h3 id="my_color">Team Blue</h3>');
     }
     else {
         $("#my_color").html("<h3 id='my_color'>Team undefined</h3>");
     }
 
-    if (payload.game.whose_turn === 'red'){
+    if (payload.game.whose_turn === 'red') {
         $("#my_color").append("<h4>It is Red's turn</h4>");
     }
-    else if (payload.game.whose_turn === 'blue'){
+    else if (payload.game.whose_turn === 'blue') {
         $("#my_color").append("<h4>It is Blue's turn</h4>");
     }
     else {
         $("#my_color").append("<h4>No turn found</h4>");
     }
-    
+
 
     let redsum = 0;
     let bluesum = 0;
@@ -316,50 +316,50 @@ socket.on('game_update', (payload) => {
     /** Animate changes to the board */
     for (let row = 0; row < 8; row++) {
         for (let column = 0; column < 8; column++) {
-            if (board[row][column] === 'r'){
+            if (board[row][column] === 'r') {
                 redsum++;
             }
-            else if (board[row][column] === 'b'){
+            else if (board[row][column] === 'b') {
                 bluesum++;
             }
 
             /** Check to see if the server changed any space on the board */
-            if (old_board[row][column] !== board[row][column]){
+            if (old_board[row][column] !== board[row][column]) {
                 let graphic = "";
                 let altTag = "";
-                if ((old_board[row][column] === '?') && (board[row][column] === ' ')){
+                if ((old_board[row][column] === '?') && (board[row][column] === ' ')) {
                     graphic = "empty.gif";
                     altTag = "empty space";
                 }
-                else if ((old_board[row][column] === '?') && (board[row][column] === 'r')){
+                else if ((old_board[row][column] === '?') && (board[row][column] === 'r')) {
                     graphic = "empty_to_red.gif";
                     altTag = "red token";
                 }
-                else if ((old_board[row][column] === '?') && (board[row][column] === 'b')){
+                else if ((old_board[row][column] === '?') && (board[row][column] === 'b')) {
                     graphic = "empty_to_blue.gif";
                     altTag = "blue token";
                 }
-                else if ((old_board[row][column] === ' ') && (board[row][column] === 'r')){
+                else if ((old_board[row][column] === ' ') && (board[row][column] === 'r')) {
                     graphic = "empty_to_red.gif";
                     altTag = "red token";
                 }
-                else if ((old_board[row][column] === ' ') && (board[row][column] === 'b')){
+                else if ((old_board[row][column] === ' ') && (board[row][column] === 'b')) {
                     graphic = "empty_to_blue.gif";
                     altTag = "blue token";
                 }
-                else if ((old_board[row][column] === 'r') && (board[row][column] === ' ')){
+                else if ((old_board[row][column] === 'r') && (board[row][column] === ' ')) {
                     graphic = "red_to_empty.gif";
                     altTag = "empty space";
                 }
-                else if ((old_board[row][column] === 'b') && (board[row][column] === ' ')){
+                else if ((old_board[row][column] === 'b') && (board[row][column] === ' ')) {
                     graphic = "blue_to_empty.gif";
                     altTag = "empty space";
                 }
-                else if ((old_board[row][column] === 'r') && (board[row][column] === 'b')){
+                else if ((old_board[row][column] === 'r') && (board[row][column] === 'b')) {
                     graphic = "red_to_blue.gif";
                     altTag = "blue space";
                 }
-                else if ((old_board[row][column] === 'b') && (board[row][column] === 'r')){
+                else if ((old_board[row][column] === 'b') && (board[row][column] === 'r')) {
                     graphic = "blue_to_red.gif";
                     altTag = "red space";
                 }
@@ -369,10 +369,14 @@ socket.on('game_update', (payload) => {
                 }
 
                 const t = Date.now();
-                $('#'+row+'_'+column).html('<img class="img-fluid" src="assets/images/'+graphic+'?time='+t+'" alt="'+altTag+'"/>');
-
-                $('#'+row+'_'+column).off('click');
-                if (board[row][column] === ' ') {
+                $('#' + row + '_' + column).html('<img class="img-fluid" src="assets/images/' + graphic + '?time=' + t + '" alt="' + altTag + '"/>');
+            }
+            
+            /** Set up interactivity */
+            $('#' + row + '_' + column).off('click');
+            $('#' + row + '_' + column).removeClass('hovered_over');
+            if (payload.game.whose_turn === my_color) {
+                if (payload.game.legal_moves[row][column] === my_color.substring(0, 1)) {
                     $('#' + row + '_' + column).addClass('hovered_over');
                     $('#' + row + '_' + column).click(((r, c) => {
                         return (() => {
@@ -386,16 +390,12 @@ socket.on('game_update', (payload) => {
                         });
                     })(row, column));
                 }
-                else {
-                    $('#' + row + '_' + column).removeClass('hovered_over');
-                }
             }
         }
     }
     $('#redsum').html(redsum);
     $('#bluesum').html(bluesum);
     old_board = board;
-
 })
 
 
@@ -433,7 +433,7 @@ socket.on('game_over', (payload) => {
     nodeA.append(nodeD);
     nodeA.hide();
     $('#game_over').replaceWith(nodeA);
-    nodeA.show('fade',1000);
+    nodeA.show('fade', 1000);
 })
 
 
