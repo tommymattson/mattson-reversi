@@ -9,7 +9,35 @@
         integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <style>
         body {
-            background-color: darkseagreen;
+            background-color: #eae2b7;
+        }
+
+        .nameInput {
+            background-color: #fbbb4c;
+            border-color: #d42d2c;
+            border-width: 3px;
+            color: #04344b;
+        }
+
+        .inputBox {
+            border-color: #d42d2c;
+            border-width: 3px;
+            border-left-width: 0px;
+            border-right: 0px;
+        }
+
+        .buttons {
+            background-color: #04344b;
+            border-color: #d42d2c;
+            border-width: 3px;
+            color: #fbbb4c;
+        }
+
+        .buttons:hover {
+            background-color: #d42d2c;
+            border-color: #04344b;
+            border-width: 3px;
+            color: #fbbb4c;
         }
     </style>
 
@@ -19,42 +47,42 @@
     <div class="container-fluid">
         <div class="row m-3">
             <div class="col text-center">
-                <a class="btn btn-success text-nowrap" href="about.html">About</a>
+                <a class="btn buttons btn-success text-nowrap" href="about.html">About</a>
             </div>
             <div class="col text-center">
-                <a class="btn btn-success text-nowrap" href="https://en.wikipedia.org/wiki/Reversi">Rules</a>
+                <a class="btn buttons btn-success text-nowrap" href="https://en.wikipedia.org/wiki/Reversi">Rules</a>
             </div>
         </div>
 
         <div class="row m-3">
             <div class="col text-center">
-                <img class="img-fluid" src="assets/images/reversiLogo_50.png" alt="Reversi Logo 1">
+                <img class="img-fluid" src="assets/images/reversiAltLogo.png" alt="Reversi Logo 1">
             </div>
         </div>
         <div class="row m-3">
             <div class="col text-center">
-                <img class="img-fluid" src="assets/images/tokenRibbon.png" alt="Reversi Tokens 1">
+                <img class="img-fluid" src="assets/images/tokenRibbonBlue1.png" alt="Reversi Tokens 1">
             </div>
         </div>
 
 
 
         <div class="row align-items-center justify-content-center m-3">
-            <div class="col-11">
+            <div class="col-md-8">
                 <div class="input-group">
-                    <span class="input-group-text" id="displayName">Name</span>
-                    <input type="text" class="form-control text-nowrap" id="nameInput"
+                    <span class="input-group-text nameInput" id="displayName">Name</span>
+                    <input type="text" class="form-control inputBox text-nowrap" id="nameInput"
                         placeholder="Choose your display name"
                         aria-label="Enter your display name for use while playing Reversi"
                         aria-describedby="displayName" />
-                    <button type="submit" class="btn btn-primary text-nowrap" id="lobbyButton"
+                    <button type="submit" class="btn buttons btn-primary text-nowrap" id="lobbyButton"
                         onclick="goToLobby()">Enter Lobby</button>
                 </div>
             </div>
         </div>
         <div class="row m-3">
             <div class="col text-center">
-                <img class="img-fluid" src="assets/images/tokenRibbonBlack.png" alt="Reversi Tokens 2">
+                <img class="img-fluid" src="assets/images/tokenRibbonRed1.png" alt="Reversi Tokens 2">
             </div>
         </div>
     </div>
