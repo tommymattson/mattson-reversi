@@ -44,6 +44,7 @@ table#game_board {
 }
 
 table#game_board td {
+    background-color: #FCBF49;
     border: 1px solid #7f7f7f;
     margin: 0px;
     padding: 0px;
@@ -51,8 +52,4 @@ table#game_board td {
 
 td.hovered_over:hover {
     background-image: url('/assets/images/hover.gif');
-}
-
-td {
-    background-color: #FCBF49;
 }

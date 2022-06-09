@@ -289,7 +289,27 @@ socket.on('game_update', (payload) => {
         return
     }
 
-    $("#my_color").html('<h3 id="my_color">I am ' + my_color + '</h3>');
+    if (my_color === 'red'){
+        $("#my_color").html('<h3 id="my_color">Team Red</h3>');
+    }
+    else if (my_color === 'blue'){
+        $("#my_color").html('<h3 id="my_color">Team Blue</h3>');
+    }
+    else {
+        $("#my_color").html("<h3 id='my_color'>Team undefined</h3>");
+    }
+
+    if (payload.game.whose_turn === 'red'){
+        $("#my_color").append("<h4>It is Red's turn</h4>");
+    }
+    else if (payload.game.whose_turn === 'blue'){
+        $("#my_color").append("<h4>It is Blue's turn</h4>");
+    }
+    else {
+        $("#my_color").append("<h4>No turn found</h4>");
+    }
+    
+
     let redsum = 0;
     let bluesum = 0;
 
@@ -386,6 +406,7 @@ socket.on('play_token_response', (payload) => {
     }
     if (payload.result === 'fail') {
         console.log(payload.message);
+        alert(payload.message);
         return;
     }
 })
