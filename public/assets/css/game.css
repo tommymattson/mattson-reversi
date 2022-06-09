@@ -2,6 +2,26 @@ body {
     background-color: #eae2b7;
 }
 
+.inputBox {
+    border-color: #d42d2c;
+    border-width: 3px;
+    border-right: 0px;
+}
+
+.buttons {
+    background-color: #04344b;
+    border-color: #d42d2c;
+    border-width: 3px;
+    color: #fbbb4c;
+}
+
+.buttons:hover {
+    background-color: #d42d2c;
+    border-color: #04344b;
+    border-width: 3px;
+    color: #fbbb4c;
+}
+
 #messagePane {
     background-color: #FCBF49;
 }
