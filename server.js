@@ -595,9 +595,9 @@ io.on('connection', (socket) => {
 
         /** Make sure the current play is coming from the expected player */
         if (
-            ((game.whose_turn === 'red') && (game.player_red.socket !== socket.id)) || 
+            ((game.whose_turn === 'red') && (game.player_red.socket !== socket.id)) ||
             ((game.whose_turn === 'blue') && (game.player_blue.socket !== socket.id))
-            ) {
+        ) {
             let response = {
                 result: 'fail',
                 message: 'play_token played the right color. But by the wrong player'
@@ -617,10 +617,12 @@ io.on('connection', (socket) => {
         if (color === 'red') {
             game.board[row][column] = 'r';
             game.whose_turn = 'blue';
+            game.legal_moves = calculate_legal_moves('b', game.board);
         }
         if (color === 'blue') {
             game.board[row][column] = 'b';
             game.whose_turn = 'red';
+            game.legal_moves = calculate_legal_moves('r', game.board);
         }
 
         send_game_update(socket, game_id, 'played a token');
@@ -658,7 +660,7 @@ function create_new_game() {
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
     ];
 
-    new_game.legal_moves= calculate_legal_moves('b', new_game.board);
+    new_game.legal_moves = calculate_legal_moves('b', new_game.board);
 
     return new_game;
 
@@ -672,7 +674,7 @@ function check_line_match(color, dr, dc, r, c, board) {
     if (board[r][c] === ' ') {
         return false;
     }
-    
+
     /** Check to make sure we aren't going to walk off the board */
     if ((r + dr < 0) || (r + dr > 7)) {
         return false;
@@ -680,7 +682,7 @@ function check_line_match(color, dr, dc, r, c, board) {
     if ((c + dc < 0) || (c + dc > 7)) {
         return false;
     }
-    return(check_line_match(color, dr, dc, r+dr, c+dc, board));
+    return (check_line_match(color, dr, dc, r + dr, c + dc, board));
 
 }
 
@@ -707,7 +709,7 @@ function adjacent_support(who, dr, dc, r, c, board) {
     }
 
     /** Check that the opposite color is present */
-    if (board[r+dr][c+dc] !== other) {
+    if (board[r + dr][c + dc] !== other) {
         return false;
     }
 
@@ -719,7 +721,7 @@ function adjacent_support(who, dr, dc, r, c, board) {
         return false;
     }
 
-    return check_line_match(who, dr, dc, r+dr+dr, c+dc+dc, board);
+    return check_line_match(who, dr, dc, r + dr + dr, c + dc + dc, board);
 }
 
 
@@ -735,18 +737,18 @@ function calculate_legal_moves(who, board) {
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
     ];
 
-    for (let row = 0; row < 8; row++){
-        for (let column = 0; column < 8; column++){
+    for (let row = 0; row < 8; row++) {
+        for (let column = 0; column < 8; column++) {
             if (board[row][column] === ' ') {
-                nn = adjacent_support(who, -1,  0, row, column, board);
-                ne = adjacent_support(who, -1,  1, row, column, board);
-                ee = adjacent_support(who,  0,  1, row, column, board);
-                se = adjacent_support(who,  1,  1, row, column, board);
-                ss = adjacent_support(who,  1,  0, row, column, board);
-                sw = adjacent_support(who,  1, -1, row, column, board);
-                ww = adjacent_support(who,  0, -1, row, column, board);
+                nn = adjacent_support(who, -1, 0, row, column, board);
+                ne = adjacent_support(who, -1, 1, row, column, board);
+                ee = adjacent_support(who, 0, 1, row, column, board);
+                se = adjacent_support(who, 1, 1, row, column, board);
+                ss = adjacent_support(who, 1, 0, row, column, board);
+                sw = adjacent_support(who, 1, -1, row, column, board);
+                ww = adjacent_support(who, 0, -1, row, column, board);
                 nw = adjacent_support(who, -1, -1, row, column, board);
-                if (nn || ne || ee || se || ss ||sw || ww || nw) {
+                if (nn || ne || ee || se || ss || sw || ww || nw) {
                     legal_moves[row][column] = who;
                 }
             }
@@ -830,7 +832,7 @@ function send_game_update(socket, game_id, message) {
     let count = 0;
     for (let row = 0; row < 8; row++) {
         for (let column = 0; column < 8; column++) {
-            if (games[game_id].board[row][column] != ' '){
+            if (games[game_id].board[row][column] != ' ') {
                 count++;
             }
         }
@@ -851,7 +853,7 @@ function send_game_update(socket, game_id, message) {
                     delete games[id];
                 });
             })(game_id)
-            ,60*60*1000
+            , 60 * 60 * 1000
         );
     }
 }
