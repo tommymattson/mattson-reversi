@@ -53,3 +53,8 @@ table#game_board td {
 td.hovered_over:hover {
     background-image: url('/assets/images/hover.gif');
 }
+
+.timer {
+   background-color: #d42d2c; 
+   color: #fbbb4c;
+}

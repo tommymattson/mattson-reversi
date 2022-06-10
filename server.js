@@ -616,14 +616,19 @@ io.on('connection', (socket) => {
         /** Execute the move */
         if (color === 'red') {
             game.board[row][column] = 'r';
+            flip_tokens('r', row, column, game.board);
             game.whose_turn = 'blue';
             game.legal_moves = calculate_legal_moves('b', game.board);
         }
         if (color === 'blue') {
             game.board[row][column] = 'b';
+            flip_tokens('b', row, column, game.board);
             game.whose_turn = 'red';
             game.legal_moves = calculate_legal_moves('r', game.board);
         }
+
+        let d = new Date();
+        game.last_move_time = d.getTime();
 
         send_game_update(socket, game_id, 'played a token');
     });
@@ -748,6 +753,7 @@ function calculate_legal_moves(who, board) {
                 sw = adjacent_support(who, 1, -1, row, column, board);
                 ww = adjacent_support(who, 0, -1, row, column, board);
                 nw = adjacent_support(who, -1, -1, row, column, board);
+
                 if (nn || ne || ee || se || ss || sw || ww || nw) {
                     legal_moves[row][column] = who;
                 }
@@ -756,6 +762,45 @@ function calculate_legal_moves(who, board) {
     }
     return legal_moves;
 }
+
+
+function flip_line(who, dr, dc, r, c, board) {
+    if ((r + dr < 0) || (r + dr > 7)) {
+        return false;
+    }
+    if ((c + dc < 0) || (c + dc > 7)) {
+        return false;
+    }
+
+    if (board[r + dr][c + dc] === ' ') {
+        return false;
+    }
+    if (board[r + dr][c + dc] === who) {
+        return true;
+    }
+    else {
+        if(flip_line(who, dr, dc, r+dr, c+dc, board)) {
+            board[r+dr][c+dc] = who;
+            return true;
+        }
+        else {
+           return false; 
+        }
+    }
+}
+
+
+function flip_tokens(who, row, column, board) {
+    flip_line(who, -1, 0, row, column, board);
+    flip_line(who, -1, 1, row, column, board);
+    flip_line(who, 0, 1, row, column, board);
+    flip_line(who, 1, 1, row, column, board);
+    flip_line(who, 1, 0, row, column, board);
+    flip_line(who, 1, -1, row, column, board);
+    flip_line(who, 0, -1, row, column, board);
+    flip_line(who, -1, -1, row, column, board);
+}
+
 
 function send_game_update(socket, game_id, message) {
     /** Check to see if a game with game_id exists */
@@ -829,20 +874,36 @@ function send_game_update(socket, game_id, message) {
     })
 
     /** Check if the game is over */
-    let count = 0;
+    let legal_moves = 0;
+    let redsum = 0;
+    let bluesum = 0;
     for (let row = 0; row < 8; row++) {
         for (let column = 0; column < 8; column++) {
-            if (games[game_id].board[row][column] != ' ') {
-                count++;
+            if (games[game_id].legal_moves[row][column] !== ' ') {
+                legal_moves++;
+            }
+            if (games[game_id].board[row][column] === 'r') {
+                redsum++;
+            }
+            if (games[game_id].board[row][column] === 'b') {
+                bluesum++;
             }
         }
     }
-    if (count === 64) {
+    if (legal_moves === 0) {
+        let winner = "Tie Game";
+        if (redsum > bluesum) {
+            winner = "Red";
+        }
+        if (redsum < bluesum) {
+            winner = "Blue";
+        }
+
         let payload = {
             result: 'success',
             game_id: game_id,
             game: games[game_id],
-            who_won: 'everyone'
+            who_won: winner
         };
         io.in(game_id).emit('game_over', payload)
 
