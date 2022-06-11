@@ -1,5 +1,17 @@
 body {
     background-color: #eae2b7;
+    padding-right: 3%;
+    padding-left: 3%;
+    color: #04344b;
+}
+
+.text {
+    color: #04344b;
+}
+
+.navigationBar {
+    background-color: #fbbb4c;
+    color: #d42d2c;
 }
 
 .inputBox {
@@ -21,6 +33,22 @@ body {
     border-width: 3px;
     color: #fbbb4c;
 }
+
+
+.button2 {
+    background-color: #d42d2c;
+    border-color: #04344b;
+    border-width: 3px;
+    color: #fbbb4c;
+}
+
+.button2:hover {
+    background-color: #fbbb4c;
+    border-color: #d42d2c;
+    border-width: 3px;
+    color: #04344b;
+}
+
 
 #messagePane {
     background-color: #FCBF49;
@@ -57,4 +85,11 @@ td.hovered_over:hover {
 .timer {
    background-color: #d42d2c; 
    color: #fbbb4c;
+}
+
+.nameInput {
+    background-color: #fbbb4c;
+    border-color: #d42d2c;
+    border-width: 3px;
+    color: #04344b;
 }
